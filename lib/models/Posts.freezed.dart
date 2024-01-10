@@ -24,6 +24,8 @@ mixin _$Posts {
   String get postedBy => throw _privateConstructorUsedError;
   String get postCaptions => throw _privateConstructorUsedError;
   String? get postImage => throw _privateConstructorUsedError;
+  String get userName => throw _privateConstructorUsedError;
+  String get userImage => throw _privateConstructorUsedError;
   List<Users> get postsTags => throw _privateConstructorUsedError;
   String get postTime => throw _privateConstructorUsedError;
   String? get postIpAddress => throw _privateConstructorUsedError;
@@ -44,6 +46,8 @@ abstract class $PostsCopyWith<$Res> {
       String postedBy,
       String postCaptions,
       String? postImage,
+      String userName,
+      String userImage,
       List<Users> postsTags,
       String postTime,
       String? postIpAddress,
@@ -67,6 +71,8 @@ class _$PostsCopyWithImpl<$Res, $Val extends Posts>
     Object? postedBy = null,
     Object? postCaptions = null,
     Object? postImage = freezed,
+    Object? userName = null,
+    Object? userImage = null,
     Object? postsTags = null,
     Object? postTime = null,
     Object? postIpAddress = freezed,
@@ -89,6 +95,14 @@ class _$PostsCopyWithImpl<$Res, $Val extends Posts>
           ? _value.postImage
           : postImage // ignore: cast_nullable_to_non_nullable
               as String?,
+      userName: null == userName
+          ? _value.userName
+          : userName // ignore: cast_nullable_to_non_nullable
+              as String,
+      userImage: null == userImage
+          ? _value.userImage
+          : userImage // ignore: cast_nullable_to_non_nullable
+              as String,
       postsTags: null == postsTags
           ? _value.postsTags
           : postsTags // ignore: cast_nullable_to_non_nullable
@@ -121,6 +135,8 @@ abstract class _$$PostsImplCopyWith<$Res> implements $PostsCopyWith<$Res> {
       String postedBy,
       String postCaptions,
       String? postImage,
+      String userName,
+      String userImage,
       List<Users> postsTags,
       String postTime,
       String? postIpAddress,
@@ -142,6 +158,8 @@ class __$$PostsImplCopyWithImpl<$Res>
     Object? postedBy = null,
     Object? postCaptions = null,
     Object? postImage = freezed,
+    Object? userName = null,
+    Object? userImage = null,
     Object? postsTags = null,
     Object? postTime = null,
     Object? postIpAddress = freezed,
@@ -164,6 +182,14 @@ class __$$PostsImplCopyWithImpl<$Res>
           ? _value.postImage
           : postImage // ignore: cast_nullable_to_non_nullable
               as String?,
+      userName: null == userName
+          ? _value.userName
+          : userName // ignore: cast_nullable_to_non_nullable
+              as String,
+      userImage: null == userImage
+          ? _value.userImage
+          : userImage // ignore: cast_nullable_to_non_nullable
+              as String,
       postsTags: null == postsTags
           ? _value._postsTags
           : postsTags // ignore: cast_nullable_to_non_nullable
@@ -192,6 +218,8 @@ class _$PostsImpl with DiagnosticableTreeMixin implements _Posts {
       required this.postedBy,
       required this.postCaptions,
       required this.postImage,
+      required this.userName,
+      required this.userImage,
       required final List<Users> postsTags,
       required this.postTime,
       required this.postIpAddress,
@@ -210,6 +238,10 @@ class _$PostsImpl with DiagnosticableTreeMixin implements _Posts {
   final String postCaptions;
   @override
   final String? postImage;
+  @override
+  final String userName;
+  @override
+  final String userImage;
   final List<Users> _postsTags;
   @override
   List<Users> get postsTags {
@@ -232,7 +264,7 @@ class _$PostsImpl with DiagnosticableTreeMixin implements _Posts {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Posts(postUid: $postUid, postedBy: $postedBy, postCaptions: $postCaptions, postImage: $postImage, postsTags: $postsTags, postTime: $postTime, postIpAddress: $postIpAddress, likes: $likes)';
+    return 'Posts(postUid: $postUid, postedBy: $postedBy, postCaptions: $postCaptions, postImage: $postImage, userName: $userName, userImage: $userImage, postsTags: $postsTags, postTime: $postTime, postIpAddress: $postIpAddress, likes: $likes)';
   }
 
   @override
@@ -244,6 +276,8 @@ class _$PostsImpl with DiagnosticableTreeMixin implements _Posts {
       ..add(DiagnosticsProperty('postedBy', postedBy))
       ..add(DiagnosticsProperty('postCaptions', postCaptions))
       ..add(DiagnosticsProperty('postImage', postImage))
+      ..add(DiagnosticsProperty('userName', userName))
+      ..add(DiagnosticsProperty('userImage', userImage))
       ..add(DiagnosticsProperty('postsTags', postsTags))
       ..add(DiagnosticsProperty('postTime', postTime))
       ..add(DiagnosticsProperty('postIpAddress', postIpAddress))
@@ -262,6 +296,10 @@ class _$PostsImpl with DiagnosticableTreeMixin implements _Posts {
                 other.postCaptions == postCaptions) &&
             (identical(other.postImage, postImage) ||
                 other.postImage == postImage) &&
+            (identical(other.userName, userName) ||
+                other.userName == userName) &&
+            (identical(other.userImage, userImage) ||
+                other.userImage == userImage) &&
             const DeepCollectionEquality()
                 .equals(other._postsTags, _postsTags) &&
             (identical(other.postTime, postTime) ||
@@ -279,6 +317,8 @@ class _$PostsImpl with DiagnosticableTreeMixin implements _Posts {
       postedBy,
       postCaptions,
       postImage,
+      userName,
+      userImage,
       const DeepCollectionEquality().hash(_postsTags),
       postTime,
       postIpAddress,
@@ -304,6 +344,8 @@ abstract class _Posts implements Posts {
       required final String postedBy,
       required final String postCaptions,
       required final String? postImage,
+      required final String userName,
+      required final String userImage,
       required final List<Users> postsTags,
       required final String postTime,
       required final String? postIpAddress,
@@ -319,6 +361,10 @@ abstract class _Posts implements Posts {
   String get postCaptions;
   @override
   String? get postImage;
+  @override
+  String get userName;
+  @override
+  String get userImage;
   @override
   List<Users> get postsTags;
   @override

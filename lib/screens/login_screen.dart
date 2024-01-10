@@ -135,6 +135,7 @@ class LoginPage extends StatelessWidget {
             }
 
             if(state is AuthSuccess) {
+              context.read<AuthBloc>().add(AlreadyAuthenticatedCheck());
               navigateAndRemovePush(context, const DashboardScreen());
             }
       },

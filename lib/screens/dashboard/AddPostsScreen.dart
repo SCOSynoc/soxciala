@@ -13,6 +13,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:soxciala/FeedsBloc/feed_bloc.dart';
 import 'package:soxciala/FeedsBloc/feed_events.dart';
 import 'package:soxciala/FeedsBloc/feeds_state.dart';
+import 'package:soxciala/repository/local_storage.dart';
 import 'package:soxciala/screens/dashboard/DashBoardScreen.dart';
 import 'package:soxciala/utlis/helper.dart';
 import 'package:soxciala/widgets/common_button.dart';
@@ -82,7 +83,11 @@ class _AddPostScreenState extends State<AddPostScreen> {
                             Uint8List f = await image.readAsBytes();
                             setState(() {
                               fileBytesWeb = f;
+
                             });
+
+                            /*HiveService service = HiveService();
+                            service.addPhotoWithMultipartRequest(fileBytesWeb);*/
                           }else{
                             File mobileSelected = File(image.path);
                             postMobileImage = mobileSelected;

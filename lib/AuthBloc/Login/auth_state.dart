@@ -54,6 +54,10 @@ class UserFollowedFailed extends AuthStates {
   UserFollowedFailed({required this.failed});
 }
 
+class UserUnFollowedSuccess extends AuthStates {}
+
+class UserUnFollowedFailed extends AuthStates {}
+
 
 class UsersPostsLoading extends AuthStates {}
 
@@ -69,6 +73,12 @@ class UserPostFailedToFetch extends AuthStates {
   final String failedMessage;
   UserPostFailedToFetch({required this.failedMessage});
 
+}
+
+
+class UserFollowedCheckSuccess extends AuthStates {
+  final bool isFollowing;
+  UserFollowedCheckSuccess({required this.isFollowing});
 }
 
 

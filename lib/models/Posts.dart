@@ -13,6 +13,7 @@ part 'Posts.g.dart';
 
 
 
+
 @freezed
 class Posts with _$Posts  {
   const factory Posts({
@@ -20,6 +21,8 @@ class Posts with _$Posts  {
     required String postedBy,
     required String postCaptions,
     required String? postImage,
+    required String userName,
+    required String userImage,
     required List<Users> postsTags,
     required String postTime,
     required String? postIpAddress,

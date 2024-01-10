@@ -15,6 +15,7 @@ _$UsersImpl _$$UsersImplFromJson(Map<String, dynamic> json) => _$UsersImpl(
           .map((e) => FeedsModel.fromJson(e as Map<String, dynamic>))
           .toList(),
       userIpAddress: json['userIpAddress'] as String?,
+      userImage: json['userImage'] as String?,
     );
 
 Map<String, dynamic> _$$UsersImplToJson(_$UsersImpl instance) =>
@@ -25,4 +26,5 @@ Map<String, dynamic> _$$UsersImplToJson(_$UsersImpl instance) =>
       'userMobile': instance.userMobile,
       'userPost': instance.userPost,
       'userIpAddress': instance.userIpAddress,
+      'userImage': instance.userImage,
     };

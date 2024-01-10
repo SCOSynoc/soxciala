@@ -48,8 +48,8 @@ class _VerticalScrollPostViewState extends State<VerticalScrollPostView> {
               itemBuilder: (context, index) {
                 List<Posts> data = snapshot.data!;
                 return  FeedsCard(
-                    userImage: "https://dummyimage.com/600x400/111/fff&text=Post+$index",
-                    userName: "jacob",
+                    userImage: data[index].userImage ,
+                    userName: "${data[index].userName}",
                     caption: "${data[index].postCaptions}",
                     feedsImage: "${data[index].postImage}", feedsUid: data[index].postUid,
                     isLiked: data[index].likes

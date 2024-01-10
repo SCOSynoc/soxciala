@@ -11,6 +11,7 @@ import 'package:uuid/uuid.dart';
 
 import '../models/Comments.dart';
 import '../models/Posts.dart';
+import '../models/Users.dart';
 import '../repository/local_storage.dart';
 
 class FeedsBloc extends Bloc<FeedsEvents, FeedsState> {
@@ -26,6 +27,7 @@ class FeedsBloc extends Bloc<FeedsEvents, FeedsState> {
 
    int postId = 0;
    PostService postService = PostService()..initializeInstances();
+   LocalDataService loService = HiveService();
 
    void _fetchFeedRequested(FetchFeedsRequested event, Emitter<FeedsState> emit) async{
            emit(FeedsLoading());
@@ -82,12 +84,13 @@ class FeedsBloc extends Bloc<FeedsEvents, FeedsState> {
          loService.addData(key: "postData", value: encodeString);
          log("here post data added successfully $addedPostList");
        }*/
+       Users user = Users.fromJson(jsonDecode(loService.getData(key: "userMap")));
 
        var postUid = const Uuid().v4();
        postService.createPostOfUser(postUid: postUid,
            postCaptions: event.captions,
            webImage: event.webImage,
-           postTime: DateTime.now().toIso8601String());
+           postTime: DateTime.now().toIso8601String(), username: user.userName, userImage: user.userImage ?? "");
          return emit(FeedsAddedSuccessfully(message: "Post created successfully"));
 
      } catch (e) {

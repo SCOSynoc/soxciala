@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
 
 @immutable
@@ -17,3 +20,25 @@ class SignupFailure extends SignupStates  {
 }
 
 class SignupLoading extends SignupStates {}
+
+class ImageAdded extends SignupStates {
+  final File? mobileFile;
+  final Uint8List? webImage;
+  ImageAdded({this.mobileFile,this.webImage});
+
+}
+
+class ProfileUpdatedSuccess extends SignupStates {
+
+}
+
+class ProfileUpdatedFailure extends SignupStates {
+
+}
+
+class ProfileImageUpdateSuccess extends SignupStates {
+  final String message;
+  ProfileImageUpdateSuccess({required this.message});
+}
+
+class ProfileImageUpdateFailure extends SignupStates {}

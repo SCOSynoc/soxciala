@@ -18,6 +18,7 @@ class Users with _$Users  {
     required String userMobile,
     required List<FeedsModel> userPost,
     required String? userIpAddress,
+    required String? userImage,
   }) = _Users;
 
   factory Users.fromJson(Map<String, dynamic> json)

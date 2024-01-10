@@ -146,12 +146,13 @@ class _CommentsPageState extends State<CommentsPage> {
                   ),
                 ),
                 trailing: TextButton(
-                  onPressed: () => {
+                  onPressed: () {
                         context.read<FeedsBloc>().add(CommentOnAddFeedRequested(
                             postId: widget.postId,
                             comment: commentController.text
                         )
-                        )
+                        );
+                        commentController.clear();
                   } ,
                   child: const Text(
                     "Publish",

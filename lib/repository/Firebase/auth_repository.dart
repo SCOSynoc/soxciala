@@ -1,8 +1,13 @@
 
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:soxciala/AuthBloc/Login/auth_state.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../models/Users.dart' ;
 import '../../screens/dashboard/DashBoardScreen.dart';
@@ -91,9 +96,24 @@ class AuthService extends AuthRepository {
     required String email,
     required String password,
     required String mobile,
-    required String name}) async{
+    required String name,
+    Uint8List? web,
+    File? mobileImage,
+    }) async{
     try{
       String uid = auth.currentUser!.uid;
+      final _uuid = const Uuid().v1();
+      String imageUri = "";
+      Reference ref = FirebaseStorage.instance.ref().child("userImages").child("$_uuid.png");
+      if(web != null) {
+        await ref.putData(web);
+        imageUri = await ref.getDownloadURL();
+      }
+
+      if(mobileImage != null){
+        await ref.putFile(mobileImage);
+        imageUri = await ref.getDownloadURL();
+      }
 
       Users user = Users(
          userEmail: email,
@@ -101,12 +121,14 @@ class AuthService extends AuthRepository {
          userMobile: mobile,
          userUid: uid,
         userPost: [],
-        userIpAddress: "",
-
+        userIpAddress: "", userImage: imageUri,
       );
+
+
       await firestore.collection("s_user").doc(uid).set(user.toJson());
-    } on FirebaseException catch(e){
-      throw AuthFailure(error: e.message.toString());
+    }  catch(e){
+      print("Error with saveUserDatatoFirestoreFunction():: ${e}");
+      throw AuthFailure(error: e.toString());
     }
 
   }
@@ -146,14 +168,69 @@ class AuthService extends AuthRepository {
 
     Users followUser = Users.fromJson(userData.data()!);
     Users currentUser = Users.fromJson(currentUserData.data()!);
-    firestore.collection("s_user").doc(auth.currentUser!.uid).collection("followings").add(followUser.toJson());
-    firestore.collection("s_user").doc(followUserId).collection("followers").add(currentUser.toJson());
+    firestore.collection("s_user").doc(auth.currentUser!.uid).collection("followings").doc(followUserId).set(followUser.toJson());
+    firestore.collection("s_user").doc(followUserId).collection("followers").doc(auth.currentUser!.uid).set(currentUser.toJson());
+
+  }
+
+  Future<bool> checkIfUserAlreadyFollowed(String followUserId) async {
+    DocumentSnapshot followedUserData = await firestore.collection("s_user").doc(auth.currentUser!.uid)
+        .collection("followings").doc(followUserId).get();
+    if(followedUserData.exists){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  void unfollowUser({required String followUserId}) async {
+    var userData =  await firestore.collection("s_user").doc(followUserId).get();
+    var currentUserData =  await firestore.collection("s_user").doc(auth.currentUser!.uid).get();
+
+    Users followUser = Users.fromJson(userData.data()!);
+    Users currentUser = Users.fromJson(currentUserData.data()!);
+    firestore.collection("s_user").doc(auth.currentUser!.uid).collection("followings").doc(followUserId).delete();
+    firestore.collection("s_user").doc(followUserId).collection("followers").doc(auth.currentUser!.uid).delete();
 
   }
 
 
+  void updateUserProfile({required Users users, required String name,
+    required String email, required String mobileNum})  async{
+    try {
+      firestore.collection("s_user").doc(users.userUid).update({
+        "userName": name,
+        "userEmail": email,
+        "userMobile": mobileNum,
+      });
+    } catch(e) {
+      throw Exception(e);
+    }
 
+  }
 
+  void updateUserProfileImage({required Users users, File? mobileImage, Uint8List? webImage }) async{
+    try {
+      final _uuid = const Uuid().v1();
+      String imageUri = "";
+      Reference ref = FirebaseStorage.instance.ref().child("userImages").child("$_uuid.png");
+      if(mobileImage != null) {
+        await ref.putFile(mobileImage);
+        imageUri = await ref.getDownloadURL();
+      }
+
+      if(webImage != null) {
+        await ref.putData(webImage);
+        imageUri = await ref.getDownloadURL();
+      }
+
+      firestore.collection("s_user").doc(users.userUid).update({
+          "userImage": imageUri
+      });
+    } catch(e) {
+      throw Exception(e);
+    }
+  }
 
 
 

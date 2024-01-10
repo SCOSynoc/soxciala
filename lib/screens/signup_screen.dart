@@ -1,17 +1,24 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:soxciala/AuthBloc/Login/auth_bloc.dart';
 import 'package:soxciala/AuthBloc/SignUp/signup_bloc.dart';
 import 'package:soxciala/AuthBloc/SignUp/signup_events.dart';
 import 'package:soxciala/AuthBloc/SignUp/signup_states.dart';
 import 'package:soxciala/screens/dashboard/DashBoardScreen.dart';
 import 'package:soxciala/utlis/helper.dart';
 
+import '../models/Users.dart';
 import '../utlis/colors.dart';
 import '../widgets/common_button.dart';
 import '../widgets/common_textfeild.dart';
 
 class SignUpPage extends StatelessWidget {
-  SignUpPage({super.key});
+  SignUpPage({super.key, this.users});
+  final Users? users;
 
   // text editing controllers
   final emailController = TextEditingController();
@@ -19,16 +26,23 @@ class SignUpPage extends StatelessWidget {
   final mobileController = TextEditingController();
   final nameController = TextEditingController();
   final bioController = TextEditingController();
+   File? postMobileImage;
+   Uint8List? fileBytesWeb;
+
+   bool isLoading = false;
+   bool updatePhoto = false;
 
 
-  // sign user in method
-  void signUserIn() {}
 
   @override
   Widget build(BuildContext context, ) {
     return BlocConsumer<SignupBloc, SignupStates>(
 
       builder: (BuildContext context, state) {
+        nameController.text = users?.userName ?? "";
+        emailController.text = users?.userEmail ?? "";
+        bioController.text = "";
+        mobileController.text = users?.userMobile ?? "";
         return Scaffold(
           backgroundColor: AppColors.backgroundColor,
           body: SafeArea(
@@ -39,13 +53,49 @@ class SignUpPage extends StatelessWidget {
                   const SizedBox(height: 50),
                   // welcome back, you've been missed!
                   Text(
-                    'Registration',
+                    users == null ?'Registration' : 'Update profile',
                     style: TextStyle(
                       color: AppColors.textColorShade2,
                       fontSize: 26,
                     ),
                   ),
                   const SizedBox(height: 10),
+
+                  Visibility(
+                    visible: users == null,
+                    child: InkWell(
+                      onTap: () async{
+                           context.read<SignupBloc>().add(ImageInsertRequested());
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(15),
+                        child: Stack(
+                          children: [
+                            SizedBox(child:kIsWeb?  CircleAvatar(
+                              radius: 70,
+                              backgroundImage:fileBytesWeb == null ? null
+                                  : MemoryImage(fileBytesWeb!),
+                              backgroundColor: Colors.grey.shade600, )
+                                : CircleAvatar(
+                              radius: 70,
+                              backgroundImage: postMobileImage == null ? null : FileImage(postMobileImage!),
+                              backgroundColor: Colors.grey.shade600,
+                            ), ),
+                               Visibility(
+                                 visible: kIsWeb ? fileBytesWeb == null ? true: false: postMobileImage == null ? true: false,
+                                 child: const Positioned(
+                                     left: 0,
+                                     right: 0,
+                                     top: 0,
+                                     bottom: 0,
+                                     child: Icon(
+                                       Icons.camera_enhance_rounded, color: Colors.black, size: 40,)
+                                 ),
+                               )
+                        ],),
+                      ),
+                    ),
+                  ),
                   // name textfield
                   CommonTextField(
                     controller: nameController,
@@ -54,17 +104,23 @@ class SignUpPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   // username textfield
-                  CommonTextField(
-                    controller: emailController,
-                    hintText: 'Email',
-                    obscureText: false,
+                  Visibility(
+                    visible: users == null ? true: false,
+                    child: CommonTextField(
+                      controller: emailController,
+                      hintText: 'Email',
+                      obscureText: false,
+                    ),
                   ),
                   const SizedBox(height: 10),
                   // password textfield
-                  CommonTextField(
-                    controller: passwordController,
-                    hintText: 'Password',
-                    obscureText: true,
+                  Visibility(
+                    visible: users == null? true: false,
+                    child: CommonTextField(
+                      controller: passwordController,
+                      hintText: 'Password',
+                      obscureText: true,
+                    ),
                   ),
 
                   const SizedBox(height: 10),
@@ -80,14 +136,24 @@ class SignUpPage extends StatelessWidget {
                   MyButton(
                     onTap:(){
 
-                      context.read<SignupBloc>().add(SignupRequested(
-                          email: emailController.text, password: passwordController.text,
-                          name: nameController.text,
-                          mobile: mobileController.text
-                      )
-                      );
+                      if(users != null) {
+                        context.read<SignupBloc>().add(
+                            ProfileUpdateRequested(
+                            email: emailController.text,
+                            name: nameController.text,
+                            mobile: mobileController.text, users: users!,
+                        ));
+                      }else{
+                        context.read<SignupBloc>().add(SignupRequested(
+                            email: emailController.text, password: passwordController.text,
+                            name: nameController.text,
+                            mobile: mobileController.text,web: fileBytesWeb,
+                            mobileImage: postMobileImage
+                        )
+                        );
+                      }
 
-                    }, buttonText: state is SignupLoading ?'Loading....':'Sign up',
+                    }, buttonText: users != null ? 'Update':'Sign up',
                   ),
                   const SizedBox(height: 50),
                 ],
@@ -106,6 +172,27 @@ class SignUpPage extends StatelessWidget {
         if(state is SignupSuccess) {
           navigateAndRemovePush(context, const DashboardScreen());
         }
+
+        if(state is ImageAdded) {
+          fileBytesWeb = state.webImage;
+          postMobileImage = state.mobileFile;
+        }
+
+        if(state is SignupLoading) {
+           isLoading = true;
+        }
+
+        if(state is ProfileUpdatedSuccess) {
+             navigateAndRemovePush(context, const DashboardScreen());
+        }
+
+        if(state is ProfileUpdatedFailure) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Update failed",),
+            ),
+          );
+        }
+
       },
 
     );

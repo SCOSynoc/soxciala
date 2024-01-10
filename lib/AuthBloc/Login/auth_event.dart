@@ -35,10 +35,27 @@ class FollowUserRequested extends AuthEvents {
     FollowUserRequested({required this.uid});
 }
 
+class UnFollowUserRequested extends AuthEvents {
+    final String uid;
+
+    UnFollowUserRequested({required this.uid});
+}
+
+
 
 /// current user post events
 class RequestCurrentUserPosts extends AuthEvents {
     final String currentUserUid;
 
     RequestCurrentUserPosts({required this.currentUserUid});
+}
+
+class CheckAlreadyFollowedEvent extends AuthEvents {
+
+    final String currentUserUid;
+    final String followedUserId;
+
+    CheckAlreadyFollowedEvent( {required this.currentUserUid,required this.followedUserId,});
+
+
 }

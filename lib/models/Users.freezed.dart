@@ -26,6 +26,7 @@ mixin _$Users {
   String get userMobile => throw _privateConstructorUsedError;
   List<FeedsModel> get userPost => throw _privateConstructorUsedError;
   String? get userIpAddress => throw _privateConstructorUsedError;
+  String? get userImage => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -43,7 +44,8 @@ abstract class $UsersCopyWith<$Res> {
       String userEmail,
       String userMobile,
       List<FeedsModel> userPost,
-      String? userIpAddress});
+      String? userIpAddress,
+      String? userImage});
 }
 
 /// @nodoc
@@ -65,6 +67,7 @@ class _$UsersCopyWithImpl<$Res, $Val extends Users>
     Object? userMobile = null,
     Object? userPost = null,
     Object? userIpAddress = freezed,
+    Object? userImage = freezed,
   }) {
     return _then(_value.copyWith(
       userUid: null == userUid
@@ -91,6 +94,10 @@ class _$UsersCopyWithImpl<$Res, $Val extends Users>
           ? _value.userIpAddress
           : userIpAddress // ignore: cast_nullable_to_non_nullable
               as String?,
+      userImage: freezed == userImage
+          ? _value.userImage
+          : userImage // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -108,7 +115,8 @@ abstract class _$$UsersImplCopyWith<$Res> implements $UsersCopyWith<$Res> {
       String userEmail,
       String userMobile,
       List<FeedsModel> userPost,
-      String? userIpAddress});
+      String? userIpAddress,
+      String? userImage});
 }
 
 /// @nodoc
@@ -128,6 +136,7 @@ class __$$UsersImplCopyWithImpl<$Res>
     Object? userMobile = null,
     Object? userPost = null,
     Object? userIpAddress = freezed,
+    Object? userImage = freezed,
   }) {
     return _then(_$UsersImpl(
       userUid: null == userUid
@@ -154,6 +163,10 @@ class __$$UsersImplCopyWithImpl<$Res>
           ? _value.userIpAddress
           : userIpAddress // ignore: cast_nullable_to_non_nullable
               as String?,
+      userImage: freezed == userImage
+          ? _value.userImage
+          : userImage // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -167,7 +180,8 @@ class _$UsersImpl with DiagnosticableTreeMixin implements _Users {
       required this.userEmail,
       required this.userMobile,
       required final List<FeedsModel> userPost,
-      required this.userIpAddress})
+      required this.userIpAddress,
+      required this.userImage})
       : _userPost = userPost;
 
   factory _$UsersImpl.fromJson(Map<String, dynamic> json) =>
@@ -191,10 +205,12 @@ class _$UsersImpl with DiagnosticableTreeMixin implements _Users {
 
   @override
   final String? userIpAddress;
+  @override
+  final String? userImage;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Users(userUid: $userUid, userName: $userName, userEmail: $userEmail, userMobile: $userMobile, userPost: $userPost, userIpAddress: $userIpAddress)';
+    return 'Users(userUid: $userUid, userName: $userName, userEmail: $userEmail, userMobile: $userMobile, userPost: $userPost, userIpAddress: $userIpAddress, userImage: $userImage)';
   }
 
   @override
@@ -207,7 +223,8 @@ class _$UsersImpl with DiagnosticableTreeMixin implements _Users {
       ..add(DiagnosticsProperty('userEmail', userEmail))
       ..add(DiagnosticsProperty('userMobile', userMobile))
       ..add(DiagnosticsProperty('userPost', userPost))
-      ..add(DiagnosticsProperty('userIpAddress', userIpAddress));
+      ..add(DiagnosticsProperty('userIpAddress', userIpAddress))
+      ..add(DiagnosticsProperty('userImage', userImage));
   }
 
   @override
@@ -224,7 +241,9 @@ class _$UsersImpl with DiagnosticableTreeMixin implements _Users {
                 other.userMobile == userMobile) &&
             const DeepCollectionEquality().equals(other._userPost, _userPost) &&
             (identical(other.userIpAddress, userIpAddress) ||
-                other.userIpAddress == userIpAddress));
+                other.userIpAddress == userIpAddress) &&
+            (identical(other.userImage, userImage) ||
+                other.userImage == userImage));
   }
 
   @JsonKey(ignore: true)
@@ -236,7 +255,8 @@ class _$UsersImpl with DiagnosticableTreeMixin implements _Users {
       userEmail,
       userMobile,
       const DeepCollectionEquality().hash(_userPost),
-      userIpAddress);
+      userIpAddress,
+      userImage);
 
   @JsonKey(ignore: true)
   @override
@@ -259,7 +279,8 @@ abstract class _Users implements Users {
       required final String userEmail,
       required final String userMobile,
       required final List<FeedsModel> userPost,
-      required final String? userIpAddress}) = _$UsersImpl;
+      required final String? userIpAddress,
+      required final String? userImage}) = _$UsersImpl;
 
   factory _Users.fromJson(Map<String, dynamic> json) = _$UsersImpl.fromJson;
 
@@ -275,6 +296,8 @@ abstract class _Users implements Users {
   List<FeedsModel> get userPost;
   @override
   String? get userIpAddress;
+  @override
+  String? get userImage;
   @override
   @JsonKey(ignore: true)
   _$$UsersImplCopyWith<_$UsersImpl> get copyWith =>

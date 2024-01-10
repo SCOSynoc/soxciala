@@ -1,4 +1,5 @@
 
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,6 +25,8 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
     on<AuthUserDataRequested>(_onAuthUserDataRequested);
     on<FollowUserRequested>(_onFollowUserRequested);
     on<RequestCurrentUserPosts>(_onRequestCurrentUsersPosts);
+    on<CheckAlreadyFollowedEvent>(_onCheckFollowedRequested);
+    on<UnFollowUserRequested>(_onUnFollowUserRequested);
 
 
   }
@@ -70,6 +73,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
     try {
       await Future.delayed(const Duration(seconds: 1), () {
         loService.removeData(key: "userData");
+        loService.removeData(key: "userMap");
         authService.logoutCurrentUser();
         return emit(AuthInitial());
       });
@@ -83,11 +87,12 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
     emit(AuthLoading()) ;
     try {
         String data = loService.getData(key: "userData");
-        print("here the checked data is user $data");
+        print("here the checked data is user from local hive storage Authentication check :: () $data");
         Users? user =await  authService.getCurrentUserData();
         if(user == null) {
           emit(AuthFailure(error:"Login again"));
         }else{
+          loService.addData(key: "userMap", value: jsonEncode(user.toJson()));
           return emit(AlreadyAuthenticated(userUid: data));
         }
 
@@ -136,6 +141,16 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
     }
   }
 
+  void _onUnFollowUserRequested(UnFollowUserRequested event, Emitter<AuthStates> emit){
+    emit (AuthLoading());
+    try{
+      authService.unfollowUser(followUserId: event.uid);
+      emit(UserUnFollowedSuccess());
+    }catch(e){
+      emit(UserUnFollowedFailed());
+    }
+  }
+
 
   void _onRequestCurrentUsersPosts(RequestCurrentUserPosts event, Emitter<AuthStates> emit) {
     emit(UsersPostsLoading());
@@ -146,6 +161,16 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
     }catch(e) {
       emit(UserPostFailedToFetch(failedMessage: "Failed due to $e"));
     }
+  }
+
+
+  void _onCheckFollowedRequested(CheckAlreadyFollowedEvent event, Emitter<AuthStates> emit) async {
+          try {
+            bool isFollowing = await authService.checkIfUserAlreadyFollowed(event.followedUserId);
+            emit(UserFollowedCheckSuccess(isFollowing: isFollowing ));
+          }catch(e){
+            throw Exception(e);
+          }
   }
 
 

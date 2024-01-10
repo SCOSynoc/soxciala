@@ -22,6 +22,8 @@ abstract class PostRepository {
     List<Users>? postsTags,
     required String postTime,
     Uint8List? webImage,
+    required String username,
+    required String userImage,
     String? postIpAddress,});
 
 
@@ -54,6 +56,8 @@ class PostService extends PostRepository {
     File? postMobileImage,
     List<Users>? postsTags,
     required String postTime,
+    required String username,
+    required String userImage,
     String? postIpAddress}) async{
     
     try {
@@ -62,18 +66,18 @@ class PostService extends PostRepository {
       String imageUri = "";
       Reference ref = FirebaseStorage.instance.ref().child("postsImages").child("$_uuid.jpg");
       if(webImage != null){
-        ref.putData(webImage);
+         await ref.putData(webImage);
         imageUri = await ref.getDownloadURL();
       }
 
       if(postMobileImage != null) {
-        ref.putFile(postMobileImage);
+        await ref.putFile(postMobileImage);
         imageUri = await ref.getDownloadURL();
       }
 
       Posts posts = Posts(postUid: postUid, postedBy: uid,
           postCaptions: postCaptions, postImage: imageUri, postsTags: postsTags ??  [],
-          postTime: postTime, postIpAddress: postIpAddress, likes: []);
+          postTime: postTime, postIpAddress: postIpAddress, likes: [], userName: username, userImage: userImage);
       await firestore.collection("s_posts").doc(postUid).set(posts.toJson());
     } catch(e) {
       throw Exception(e);

@@ -11,6 +11,8 @@ _$PostsImpl _$$PostsImplFromJson(Map<String, dynamic> json) => _$PostsImpl(
       postedBy: json['postedBy'] as String,
       postCaptions: json['postCaptions'] as String,
       postImage: json['postImage'] as String?,
+      userName: json['userName'] as String,
+      userImage: json['userImage'] as String,
       postsTags: (json['postsTags'] as List<dynamic>)
           .map((e) => Users.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -25,6 +27,8 @@ Map<String, dynamic> _$$PostsImplToJson(_$PostsImpl instance) =>
       'postedBy': instance.postedBy,
       'postCaptions': instance.postCaptions,
       'postImage': instance.postImage,
+      'userName': instance.userName,
+      'userImage': instance.userImage,
       'postsTags': instance.postsTags,
       'postTime': instance.postTime,
       'postIpAddress': instance.postIpAddress,
