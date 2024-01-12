@@ -154,23 +154,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Visibility(
+                            /*Visibility(
                                 visible: alreadyFollower,
-                                child: FollowButton(text: "Follow back",
-                                    width: MediaQuery.of(context).size.width*0.35, height: MediaQuery.of(context).size.height*0.05),
-                            ),
-                            Visibility(
-                              visible: alreadyFollower == true && alreadyFollowed == false ? false: true,
-                              child: FollowButton(text: alreadyFollowed? "Unfollow": "Follow", width: MediaQuery.of(context).size.width*0.35,
-                                height: MediaQuery.of(context).size.height*0.05,  onPressed: () {
-                                  if(alreadyFollowed){
-                                    context.read<AuthBloc>().add(UnFollowUserRequested(uid: widget.uid ?? ""));
-                                  }else{
-                                    context.read<AuthBloc>().add(FollowUserRequested(uid: widget.uid ?? ""));
-                                  }
+                                child: FollowButton(
+                                    text: "Follow back",
+                                    width: MediaQuery.of(context).size.width*0.35, height: MediaQuery.of(context).size.height*0.05,
+                                    onPressed: (){
+                                      context.read<AuthBloc>().add(FollowUserRequested(uid: widget.uid ?? ""));
+                                    },
+                                ),
+                            ),*/
+                            FollowButton(text: Helper.followButtonText(
+                                alreadyFollowing: alreadyFollowed,
+                                alreadyFollower: alreadyFollower), width: MediaQuery.of(context).size.width*0.35,
+                              height: MediaQuery.of(context).size.height*0.05,  onPressed: () {
+                                if(Helper.followOrUnFollowFunction(alreadyFollowing: alreadyFollowed, alreadyFollower: alreadyFollower)){
+                                  context.read<AuthBloc>().add(FollowUserRequested(uid: widget.uid ?? ""));
+                                }else{
+                                  context.read<AuthBloc>().add(UnFollowUserRequested(uid: widget.uid ?? ""));
+                                }
 
-                                },),
-                            ),
+
+
+                              },),
                           ],
                         ),
                       );

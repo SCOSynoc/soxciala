@@ -90,6 +90,34 @@ class Helper {
     return LoginPage();
   }
 
+  static String followButtonText({required bool alreadyFollowing, required bool alreadyFollower}){
+      if(alreadyFollowing == true && alreadyFollower == true) {
+        return "Unfollow";
+      }else if(alreadyFollower == true && alreadyFollowing == false) {
+        return "Follow Back";
+      } else if (alreadyFollower == false && alreadyFollowing == true){
+        return "Unfollow";
+      }else{
+        return "Follow";
+      }
+  }
+
+  static bool followOrUnFollowFunction({required bool alreadyFollowing, required bool alreadyFollower}){
+    if(alreadyFollowing == true && alreadyFollower == true) {
+      /// if true then call follow user function
+      return false;
+    }else if(alreadyFollower == true && alreadyFollowing == false) {
+      /// if true then call follow user function
+      return true;
+    } else if (alreadyFollower == false && alreadyFollowing == true){
+      /// if false the call unfollow function
+      return false;
+    }else{
+      /// if true then call follow user function
+      return true;
+    }
+  }
+
 
 
 }
