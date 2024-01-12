@@ -28,6 +28,8 @@ class ImageAdded extends SignupStates {
 
 }
 
+class ImageAddedFailure extends SignupStates {}
+
 class ProfileUpdatedSuccess extends SignupStates {
 
 }

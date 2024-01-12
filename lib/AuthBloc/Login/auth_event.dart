@@ -56,6 +56,15 @@ class CheckAlreadyFollowedEvent extends AuthEvents {
     final String followedUserId;
 
     CheckAlreadyFollowedEvent( {required this.currentUserUid,required this.followedUserId,});
+}
+
+
+class CheckAlreadyFollowerEvent extends AuthEvents {
+
+    final String currentUserUid;
+    final String followedUserId;
+
+    CheckAlreadyFollowerEvent( {required this.currentUserUid,required this.followedUserId,});
 
 
 }

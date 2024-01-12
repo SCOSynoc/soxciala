@@ -20,6 +20,7 @@ class ImageUpdatePage extends StatelessWidget {
 
   File? postMobileImage;
   Uint8List? fileBytesWeb;
+  bool imageAdded = false;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +29,7 @@ class ImageUpdatePage extends StatelessWidget {
         if(state is ImageAdded) {
           fileBytesWeb = state.webImage;
           postMobileImage = state.mobileFile;
+          imageAdded = true;
         }
 
         if(state is ProfileImageUpdateSuccess){
@@ -41,7 +43,12 @@ class ImageUpdatePage extends StatelessWidget {
       },
       builder: (context, state) {
         return Scaffold(
+          appBar: AppBar(
+            automaticallyImplyLeading: true,
+            title: const Text("Update Iamge"),
+          ),
            body: Column(
+             mainAxisAlignment: MainAxisAlignment.center,
              children: [
                InkWell(
                  onTap: () {
@@ -77,11 +84,19 @@ class ImageUpdatePage extends StatelessWidget {
                ),
                MyButton(
                  onTap:(){
-                        context.read<SignupBloc>().add(ProfileImageUpdateRequested(
-                          user: user,
-                          webImage: fileBytesWeb,
-                          mobileImage: postMobileImage
-                        ));
+                   if(imageAdded){
+                     context.read<SignupBloc>().add(ProfileImageUpdateRequested(
+                         user: user,
+                         webImage: fileBytesWeb,
+                         mobileImage: postMobileImage
+                     ));
+                   }else{
+                     ScaffoldMessenger.of(context).showSnackBar(
+                       const SnackBar(content: Text("Please add image ",),
+                       ),
+                     );
+                   }
+
                  }, buttonText:"Update photo",
                )
              ],

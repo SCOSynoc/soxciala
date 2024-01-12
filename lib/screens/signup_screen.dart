@@ -45,13 +45,20 @@ class SignUpPage extends StatelessWidget {
         mobileController.text = users?.userMobile ?? "";
         return Scaffold(
           backgroundColor: AppColors.backgroundColor,
+          resizeToAvoidBottomInset: true,
+          appBar: AppBar(
+            surfaceTintColor: Colors.transparent,
+            automaticallyImplyLeading: true,
+             title: Text( users == null ? "Sign up" : "Update profile"),
+          ),
           body: SafeArea(
-            child: Center(
+            child: SingleChildScrollView(
+              clipBehavior: Clip.none,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const SizedBox(height: 50),
-                  // welcome back, you've been missed!
+
                   Text(
                     users == null ?'Registration' : 'Update profile',
                     style: TextStyle(

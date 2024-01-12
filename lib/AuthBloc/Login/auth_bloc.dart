@@ -27,6 +27,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
     on<RequestCurrentUserPosts>(_onRequestCurrentUsersPosts);
     on<CheckAlreadyFollowedEvent>(_onCheckFollowedRequested);
     on<UnFollowUserRequested>(_onUnFollowUserRequested);
+    on<CheckAlreadyFollowerEvent>(_onCheckFollowerRequested);
 
 
   }
@@ -171,6 +172,15 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
           }catch(e){
             throw Exception(e);
           }
+  }
+
+  void _onCheckFollowerRequested(CheckAlreadyFollowerEvent event, Emitter<AuthStates> emit) async {
+    try {
+      bool isFollower = await authService.checkIfUserAlreadyFollower(event.followedUserId);
+      emit(UserFollowerCheckSuccess(isFollower: isFollower ));
+    }catch(e){
+      throw Exception(e);
+    }
   }
 
 

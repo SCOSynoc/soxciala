@@ -48,11 +48,10 @@ class FindPeopleScreen extends StatelessWidget {
                                   onTap:  state is AuthLoading ? null : () {
                                    navigateToScreen(context, ProfileScreen(uid: b[index].userUid,));
                                   },
-                                  child: ListTile(title: Text(b[index].userName),
-                                    trailing: state is AuthLoading ?  const CircularProgressIndicator.adaptive() :
-                                    FollowButton(
-                                    text: 'Follow', width: MediaQuery.of(context).size.width*0.15,
-                                      height: MediaQuery.of(context).size.height*0.04,) ,
+                                  child: ListTile(
+                                    leading: CircleAvatar(radius: 22, backgroundImage:b[index].userImage == null ? null : NetworkImage(b[index].userImage ?? ""),),
+                                    title: Text(b[index].userName,),
+
                                   ),
                                 );
                               }),

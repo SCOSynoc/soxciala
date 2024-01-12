@@ -52,17 +52,22 @@ class SignupBloc extends Bloc<SignupEvents, SignupStates> {
   }
 
   void _uploadImageRequested(ImageInsertRequested event, Emitter<SignupStates> emit) async{
-    final ImagePicker _picker = ImagePicker();
-    XFile? image = await  _picker.pickImage(source: ImageSource.gallery);
-    if(image != null) {
-      if(kIsWeb){
-        Uint8List f = await image.readAsBytes();
-        emit(ImageAdded(webImage: f));
-      }else{
-        File mobileSelected = File(image.path);
-        emit(ImageAdded(mobileFile: mobileSelected));
+    try {
+      final ImagePicker _picker = ImagePicker();
+      XFile? image = await  _picker.pickImage(source: ImageSource.gallery);
+      if(image != null) {
+        if(kIsWeb){
+          Uint8List f = await image.readAsBytes();
+          emit(ImageAdded(webImage: f));
+        }else{
+          File mobileSelected = File(image.path);
+          emit(ImageAdded(mobileFile: mobileSelected));
+        }
       }
+    }catch(e) {
+      emit(ImageAddedFailure());
     }
+
   }
 
 

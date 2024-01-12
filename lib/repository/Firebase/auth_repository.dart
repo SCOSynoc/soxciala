@@ -163,9 +163,9 @@ class AuthService extends AuthRepository {
 
 
   void followUser({required String followUserId}) async {
+
     var userData =  await firestore.collection("s_user").doc(followUserId).get();
     var currentUserData =  await firestore.collection("s_user").doc(auth.currentUser!.uid).get();
-
     Users followUser = Users.fromJson(userData.data()!);
     Users currentUser = Users.fromJson(currentUserData.data()!);
     firestore.collection("s_user").doc(auth.currentUser!.uid).collection("followings").doc(followUserId).set(followUser.toJson());
@@ -182,6 +182,18 @@ class AuthService extends AuthRepository {
       return false;
     }
   }
+
+  Future<bool> checkIfUserAlreadyFollower(String followerUserId) async {
+    DocumentSnapshot followedUserData = await firestore.collection("s_user").doc(auth.currentUser!.uid)
+        .collection("followers").doc(followerUserId).get();
+    if(followedUserData.exists){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+
 
   void unfollowUser({required String followUserId}) async {
     var userData =  await firestore.collection("s_user").doc(followUserId).get();

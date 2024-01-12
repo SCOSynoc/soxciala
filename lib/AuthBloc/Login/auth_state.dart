@@ -81,6 +81,13 @@ class UserFollowedCheckSuccess extends AuthStates {
   UserFollowedCheckSuccess({required this.isFollowing});
 }
 
+class UserFollowerCheckSuccess extends AuthStates {
+  final bool isFollower;
+  UserFollowerCheckSuccess({required this.isFollower});
+}
+
+
+
 
 
 

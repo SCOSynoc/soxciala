@@ -38,21 +38,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String? userImage;
   bool alreadyFollowed = false;
   Users? currentUser;
+  bool alreadyFollower = false;
 
 
   @override
   void initState() {
     super.initState();
+    print("Calling all function 1 time");
     context.read<AuthBloc>().add(AuthUserDataRequested(uid: widget.uid ?? ""));
     context.read<AuthBloc>().add(CheckAlreadyFollowedEvent(currentUserUid: "", followedUserId: widget.uid ?? ""));
+    context.read<AuthBloc>().add(CheckAlreadyFollowerEvent(currentUserUid: "", followedUserId: widget.uid ?? ""));
   }
-
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
+    print("Calling all function 2 time");
     context.read<AuthBloc>().add(AuthUserDataRequested(uid: widget.uid ?? ""));
     context.read<AuthBloc>().add(CheckAlreadyFollowedEvent(currentUserUid: "", followedUserId: widget.uid ?? ""));
+    context.read<AuthBloc>().add(CheckAlreadyFollowerEvent(currentUserUid: "", followedUserId: widget.uid ?? ""));
   }
 
 
@@ -71,7 +74,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
         return Scaffold(
           appBar: AppBar(
-            automaticallyImplyLeading: false,
+            automaticallyImplyLeading: widget.uid == null ? false : true,
             title: const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -108,30 +111,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   builder: (context, snapshot) {
                     return Container(
                       child:  Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: ValueListenableBuilder(
-                                    valueListenable: Helper.followers,
-                                    builder: (c,p,e) {
-                                      return  ProfileEnagementCounts(count: '$p', engageTypeText: 'Followers', );
-                                    })
+                        child: StreamBuilder<Users>(
+                          stream: currentUser == null ? null: Stream.value(currentUser!),
+                          builder: (context, snapshot) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ValueListenableBuilder(
+                                        valueListenable: Helper.followers,
+                                        builder: (c,p,e) {
+                                          return  ProfileEnagementCounts(count: '$p', engageTypeText: 'Followers', );
+                                        })
 
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ValueListenableBuilder(
-                                valueListenable: Helper.following,
-                                builder: (c,f,e) {
-                                  print("the followers cou8nt is $f, $e");
-                                  return ProfileEnagementCounts(count: '$f', engageTypeText: 'Following',);
-                                },
-                              ),
-                            ),
-                          ],),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ValueListenableBuilder(
+                                    valueListenable: Helper.following,
+                                    builder: (c,f,e) {
+                                      print("the followers cou8nt is $f, $e");
+                                      return ProfileEnagementCounts(count: '$f', engageTypeText: 'Following',);
+                                    },
+                                  ),
+                                ),
+                              ],);
+                          }
+                        ),
                       ),
                     );
                   }
@@ -143,15 +151,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     builder: (context, snapshot) {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: FollowButton(text: alreadyFollowed? "Unfollow": "Follow", width: MediaQuery.of(context).size.width*0.35,
-                          height: MediaQuery.of(context).size.height*0.05,  onPressed: () {
-                            if(alreadyFollowed){
-                              context.read<AuthBloc>().add(UnFollowUserRequested(uid: widget.uid ?? ""));
-                            }else{
-                              context.read<AuthBloc>().add(FollowUserRequested(uid: widget.uid ?? ""));
-                            }
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Visibility(
+                                visible: alreadyFollower,
+                                child: FollowButton(text: "Follow back",
+                                    width: MediaQuery.of(context).size.width*0.35, height: MediaQuery.of(context).size.height*0.05),
+                            ),
+                            Visibility(
+                              visible: alreadyFollower == true && alreadyFollowed == false ? false: true,
+                              child: FollowButton(text: alreadyFollowed? "Unfollow": "Follow", width: MediaQuery.of(context).size.width*0.35,
+                                height: MediaQuery.of(context).size.height*0.05,  onPressed: () {
+                                  if(alreadyFollowed){
+                                    context.read<AuthBloc>().add(UnFollowUserRequested(uid: widget.uid ?? ""));
+                                  }else{
+                                    context.read<AuthBloc>().add(FollowUserRequested(uid: widget.uid ?? ""));
+                                  }
 
-                          },),
+                                },),
+                            ),
+                          ],
+                        ),
                       );
                     }
                 ),
@@ -242,6 +263,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
       if(state is UserUnFollowedSuccess) {
         alreadyFollowed = false;
       }
+
+
+      if(state is UserFollowerCheckSuccess) {
+        alreadyFollower = state.isFollower;
+      }
+
     },
     );
   }
