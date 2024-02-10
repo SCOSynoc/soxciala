@@ -50,6 +50,7 @@ class MyApp extends StatelessWidget {
       child: BlocConsumer<AuthBloc, AuthStates>(
         builder: (context, state) {
           return MaterialApp(
+            scrollBehavior: const ScrollBehavior().copyWith(scrollbars: false),
             debugShowCheckedModeBanner: false,
             title: 'Flutter Demo',
             theme: ThemeData(

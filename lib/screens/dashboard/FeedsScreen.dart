@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:soxciala/FeedsBloc/feed_bloc.dart';
@@ -48,16 +49,63 @@ class _FeedsScreenState extends State<FeedsScreen> {
             appBar: AppBar(
               title: Text('Feeds'),
             ),
-            body: Container(
-              child: VerticalScrollPostView(state: successState,),
+            body: Center(
+              child: Container(
+                child: VerticalScrollPostView(state: successState,),
+              ),
             )
-        );;
+        );
 
       }, listener: (BuildContext context, Object? state) {
       if(state is FeedsFetchSuccess){
 
       }
     },
+    );
+  }
+}
+
+
+class AnimatedBuilderExample extends StatefulWidget {
+  const AnimatedBuilderExample({super.key});
+
+  @override
+  State<AnimatedBuilderExample> createState() => _AnimatedBuilderExampleState();
+}
+
+/// AnimationControllers can be created with `vsync: this` because of
+/// TickerProviderStateMixin.
+class _AnimatedBuilderExampleState extends State<AnimatedBuilderExample>
+    with TickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(
+    duration: const Duration(seconds: 10),
+    vsync: this,
+  )..repeat();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _controller,
+      child: Container(
+        width: 200.0,
+        height: 200.0,
+        color: Colors.green,
+        child: const Center(
+          child: Text('Whee!'),
+        ),
+      ),
+      builder: (BuildContext context, Widget? child) {
+        return Transform.translate(
+          offset: const Offset(0.8, 10.0),
+          child: child,
+        );
+      },
     );
   }
 }

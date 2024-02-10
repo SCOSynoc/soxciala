@@ -70,7 +70,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 children: [
                   const Padding(
                     padding: EdgeInsets.all(8.0),
-                    child: CustomText(text: "Add Image for post"),
+                    child: Center(child: CustomText(text: "Add Image for post")),
                   ),
                   Center(
                     child: InkWell(
@@ -112,17 +112,18 @@ class _AddPostScreenState extends State<AddPostScreen> {
                     ),
                   ),
                   const Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 8),
                     child: CustomText(text: "Add Caption for post"),
                   ),
                   CommonTextField(controller: captionController, hintText: 'Add Caption here', obscureText: false,),
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: CustomText(text: "Tag your friend"),
-                  ),
-                  SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: const MultiSelectDropdown()),
+                  // const Padding(
+                  //   padding: EdgeInsets.all(8.0),
+                  //   child: CustomText(text: "Tag your friend"),
+                  // ),
+                  // SizedBox(
+                  //     width: MediaQuery.of(context).size.width,
+                  //     child: const MultiSelectDropdown()),
+                  SizedBox(height: 20,),
                   MyButton(onTap: (){
                     context.read<FeedsBloc>().add(AddFeedsEvent(
                         image: postMobileImage, captions: captionController.text, tags: '', webImage: fileBytesWeb));

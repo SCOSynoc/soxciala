@@ -128,37 +128,38 @@ class _CommentsPageState extends State<CommentsPage> {
               ),
               Divider(),
               ListTile(
-                title: Container(
-                  height: MediaQuery.of(context).size.height*0.05,
-                  child: TextFormField(
+                title:SingleChildScrollView(
+                  child: TextField(
+                    maxLines: null,
                     controller: commentController,
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                     decoration: InputDecoration(
+                      contentPadding: EdgeInsets.zero,
                       floatingLabelBehavior: FloatingLabelBehavior.never,
                       labelText: 'Comment',
-                      enabledBorder: OutlineInputBorder(
+                      enabledBorder: UnderlineInputBorder(
                           borderRadius: BorderRadius.circular(20.0),
                           borderSide: BorderSide(color: AppColors.appSecondaryColor)),
-                      focusedBorder: OutlineInputBorder(
+                      focusedBorder: UnderlineInputBorder(
                           borderRadius: BorderRadius.circular(20.0),
                           borderSide: BorderSide(color: AppColors.appSecondaryColor)),
                     ),
                   ),
+              ),trailing: TextButton(
+                onPressed: () {
+                  context.read<FeedsBloc>().add(CommentOnAddFeedRequested(
+                      postId: widget.postId,
+                      comment: commentController.text
+                  )
+                  );
+                  commentController.clear();
+                } ,
+                child: const Text(
+                  "Publish",
                 ),
-                trailing: TextButton(
-                  onPressed: () {
-                        context.read<FeedsBloc>().add(CommentOnAddFeedRequested(
-                            postId: widget.postId,
-                            comment: commentController.text
-                        )
-                        );
-                        commentController.clear();
-                  } ,
-                  child: const Text(
-                    "Publish",
-                  ),
-                ),
-              )
+              ) ,)
+
+
             ],
           ),
         ),
@@ -176,7 +177,6 @@ class _CommentsPageState extends State<CommentsPage> {
        if(state is CommentsInitial){
          context.read<FeedsBloc>().add(CommentsFetchRequestedOfPost(postId: widget.postId));
        }
-
 
 
 

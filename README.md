@@ -6,11 +6,26 @@ A new Flutter project.
 
 This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+This application is a cross platform application and has a firebase as a backend
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+MVC pattern is used for development with bloc state management 
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+project url - 
+# media-project-soxxiala.firebaseapp.com
+
+
+Test users:
+# user-1
+# email - guys@gmail.com
+# password - abcd@123
+
+# user-2
+# email - zeno@gmail.com
+# password - abcd@123
+
+# user-3
+# email - jean@gmail.com
+# password - abcd@123
+
+
