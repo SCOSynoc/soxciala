@@ -11,7 +11,7 @@ This application is a cross platform application and has a firebase as a backend
 MVC pattern is used for development with bloc state management 
 
 
-project-url - [https://media-project-soxxiala.firebaseapp.com/]
+project-url - https://media-project-soxxiala.firebaseapp.com
 
 
 # Test users:
