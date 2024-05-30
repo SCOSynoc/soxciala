@@ -12,20 +12,20 @@ MVC pattern is used for development with bloc state management
 
 
 project url - 
-[a-link] media-project-soxxiala.firebaseapp.com
+[a-link] (media-project-soxxiala.firebaseapp.com)
 
 
 # Test users:
 user-1
 email - guys@gmail.com
+password - abcd@123
 
-password - abcd@12
 user-2
-
 email - zeno@gmail.com
-password - abcd@12
+password - abcd@123
 
 user-3
 email - jean@gmail.com
-password - abcd@12
+password - abcd@123
+
 
