@@ -16,16 +16,16 @@ project-url - https://media-project-soxxiala.firebaseapp.com
 
 # Test users:
 
-### user-1
-### email - guys@gmail.com
-### password - abcd@123
+#### user-1
+#### email - guys@gmail.com
+#### password - abcd@123
 
-### user-2
-### email - zeno@gmail.com
-### password - abcd@123
+#### user-2
+#### email - zeno@gmail.com
+#### password - abcd@123
 
-### user-3
-### email - jean@gmail.com
-### password - abcd@123
+#### user-3
+#### email - jean@gmail.com
+#### password - abcd@123
 
 
