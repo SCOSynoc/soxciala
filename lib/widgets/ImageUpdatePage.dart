@@ -45,7 +45,7 @@ class ImageUpdatePage extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             automaticallyImplyLeading: true,
-            title: const Text("Update Iamge"),
+            title: const Text("Update Image"),
           ),
            body: Column(
              mainAxisAlignment: MainAxisAlignment.center,

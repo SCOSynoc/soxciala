@@ -52,8 +52,6 @@ class AuthService extends AuthRepository {
       return user;
     }else{
       var userData = await firestore.collection("s_user").doc(auth.currentUser!.uid).get();
-
-
       if(userData.data() != null){
         /*var fDocument =  await firestore.collection("s_user").doc(auth.currentUser!.uid).collection("followers").get();
         var folDocument =  await firestore.collection("s_user").doc(auth.currentUser!.uid).collection("followings").get();

@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:soxciala/utlis/helper.dart';
 import 'package:soxciala/widgets/LazyLoad.dart';
+import 'package:soxciala/widgets/appear_aniamtion_widget.dart';
 import 'package:very_good_infinite_list/very_good_infinite_list.dart';
 
 import '../FeedsBloc/feeds_state.dart';
@@ -47,13 +48,15 @@ class _VerticalScrollPostViewState extends State<VerticalScrollPostView> {
               itemCount: snapshot.data!.length, // Change this to the number of posts you want to display
               itemBuilder: (context, index) {
                 List<Posts> data = snapshot.data!;
-                return  FeedsCard(
-                    userImage: data[index].userImage ,
-                    userName: "${data[index].userName}",
-                    caption: "${data[index].postCaptions}",
-                    feedsImage: "${data[index].postImage}", feedsUid: data[index].postUid,
-                    isLiked: data[index].likes
-                        .contains(FirebaseAuth.instance.currentUser!.uid), likes: data[index].likes,);
+                return  AnimatedAppearWidget(
+                  child: FeedsCard(
+                      userImage: data[index].userImage ,
+                      userName: "${data[index].userName}",
+                      caption: "${data[index].postCaptions}",
+                      feedsImage: "${data[index].postImage}", feedsUid: data[index].postUid,
+                      isLiked: data[index].likes
+                          .contains(FirebaseAuth.instance.currentUser!.uid), likes: data[index].likes,),
+                );
               },
             );
       }

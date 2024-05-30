@@ -57,15 +57,9 @@ class FindPeopleScreen extends StatelessWidget {
                               }),
                         );
                       })
-
-
-
                 ],
               )
           );
-
-
-
       }
     );
   }
