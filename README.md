@@ -4,9 +4,9 @@ A new Flutter project.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This is a starting point for a Flutter application.
 
-This application is a cross platform application and has a firebase as a backend
+This application is a cross platform application and has firebase as a backend
 
 MVC pattern is used for development with bloc state management 
 
